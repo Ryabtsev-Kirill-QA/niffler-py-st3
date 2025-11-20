@@ -17,10 +17,6 @@ class RegistrationPage(BasePage):
         self.sign_in_form = page.locator("[class='form_sign-in']")
         self.error_message = page.locator("[class='form__error']")
 
-    def navigate_to_auth_page(self):
-        self.go_to(self.auth_url)
-        self.wait_for_load()
-
     def click_register_link(self):
         self.register_link.click()
 
