@@ -50,6 +50,13 @@ class SpendingPage(BasePage):
         self.click_add()
         self.page.get_by_text("New spending is successfully created").wait_for(state='visible')
 
+    def add_edit_spending(self, amount, category, description):
+        self.fill_amount(amount)
+        self.fill_category(category)
+        self.fill_description(description)
+        self.click_add()
+        self.page.get_by_text("Spending is edited successfully").wait_for(state='visible')
+
     def delete_spending(self):
         self.checkbox_table.last.click()
         self.delete_spending_button.click()
