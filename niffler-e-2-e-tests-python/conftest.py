@@ -7,6 +7,7 @@ from playwright.sync_api import Browser
 from pages.auth_page import LoginPage
 from pages.registration_page import RegistrationPage
 from pages.spending_page import SpendingPage
+from pages.profile_page import ProfilePage
 from clients.spends_client import SpendsHttpClient
 
 
@@ -65,6 +66,18 @@ def registration_page(page: Page, auth_url) -> RegistrationPage:
 def spending_page(page_with_auth: Page, frontend_url) -> SpendingPage:
     spending_page = SpendingPage(page_with_auth, frontend_url)
     return spending_page
+
+
+@pytest.fixture(scope="function")
+def profile_page(page_with_auth: Page) -> ProfilePage:
+    profile_page = ProfilePage(page_with_auth)
+    return profile_page
+
+
+@pytest.fixture()
+def open_profile_page(profile_page, frontend_url):
+    profile_page.go_to(frontend_url + '/profile')
+    profile_page.wait_for_load()
 
 
 @pytest.fixture(params=[])
