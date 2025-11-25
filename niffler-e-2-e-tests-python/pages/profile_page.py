@@ -1,6 +1,5 @@
 from playwright.sync_api import Page
 from pages.base_page import BasePage
-from faker import Faker
 
 
 class ProfilePage(BasePage):
@@ -45,9 +44,3 @@ class ProfilePage(BasePage):
         name = "test_name"
         if self.profile_name.text_content() != name:
             self.add_profile_name(name)
-
-    def add_new_category_if_empty(self):
-        faker = Faker()
-        category_name = faker.word()
-        if self.edit_category_name.first.is_hidden():
-            self.add_new_category(category_name)
