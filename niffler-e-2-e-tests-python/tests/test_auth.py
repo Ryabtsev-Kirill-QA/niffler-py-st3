@@ -1,8 +1,9 @@
 from playwright.sync_api import expect
+from marks import Pages
 
 
+@Pages.open_login_page
 def test_auth(login_page, user_creds):
-    login_page.navigate_to_auth_page()
     login_page.login(user_creds["username"], user_creds["password"])
 
     expect(login_page.login_text).not_to_be_visible()
@@ -10,8 +11,8 @@ def test_auth(login_page, user_creds):
     expect(login_page.spending_page_name).to_be_visible()
 
 
+@Pages.open_login_page
 def test_invalid_auth(login_page):
-    login_page.navigate_to_auth_page()
     login_page.login("invalid_user", "invalid_password")
 
     error_text = login_page.error_message.text_content()

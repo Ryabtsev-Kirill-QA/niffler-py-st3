@@ -16,11 +16,15 @@ class SpendingPage(BasePage):
         self.edit_spending_button = page.locator("[aria-label='Edit spending']")
         self.delete_spending_button = page.locator("[id='delete']")
 
+        self.search_input = page.locator("[placeholder='Search']")
+
         self.new_spending = page.locator("[href='/spending']")
         self.amount_input = page.locator("[id='amount']")
         self.category_input = page.locator("[id='category']")
         self.description_input = page.locator("[id='description']")
         self.add_button = page.locator("[id='save']")
+
+        self.profile_menu = page.locator("[data-testid='PersonIcon']")
 
     def navigate_to_spending_page(self):
         self.go_to(self.front_url)
@@ -50,6 +54,13 @@ class SpendingPage(BasePage):
         self.click_add()
         self.page.get_by_text("New spending is successfully created").wait_for(state='visible')
 
+    def add_edit_spending(self, amount, category, description):
+        self.fill_amount(amount)
+        self.fill_category(category)
+        self.fill_description(description)
+        self.click_add()
+        self.page.get_by_text("Spending is edited successfully").wait_for(state='visible')
+
     def delete_spending(self):
         self.checkbox_table.last.click()
         self.delete_spending_button.click()
@@ -59,3 +70,12 @@ class SpendingPage(BasePage):
         self.checkbox_table.first.click()
         self.delete_spending_button.click()
         self.page.get_by_text('Delete').last.click()
+
+    def search_spending(self, input_word: str):
+        self.search_input.fill(input_word)
+        self.page.keyboard.press("Enter")
+
+    def logout(self):
+        self.profile_menu.click()
+        self.page.get_by_text("Sign out").click()
+        self.page.get_by_text("Log out").click()
