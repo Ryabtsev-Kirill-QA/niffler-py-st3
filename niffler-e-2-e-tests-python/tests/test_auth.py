@@ -3,8 +3,8 @@ from marks import Pages
 
 
 @Pages.open_login_page
-def test_auth(login_page, user_creds):
-    login_page.login(user_creds["username"], user_creds["password"])
+def test_auth(login_page, envs):
+    login_page.login(envs.niffler_username, envs.niffler_password)
 
     expect(login_page.login_text).not_to_be_visible()
     expect(login_page.app_name).to_contain_text("Niffler")
