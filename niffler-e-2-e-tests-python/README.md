@@ -42,3 +42,9 @@ poetry run pytest
 ```
 poetry run pytest --headed --slowmo 1000
 ```
+
+Аргументы для формирования отчета Allure
+```
+--alluredir=allure-results --clean-alluredir
+```
+для отображения отчета allure serve (Allure должен быть в Path)
