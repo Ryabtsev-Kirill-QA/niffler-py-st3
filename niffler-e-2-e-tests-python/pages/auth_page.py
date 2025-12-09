@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 from pages.base_page import BasePage
 
@@ -15,16 +16,20 @@ class LoginPage(BasePage):
         self.spending_page_name = page.locator("[href='/spending']")
 
     def fill_username(self, username: str):
-        self.username_input.fill(username)
+        with allure.step('Заполнить логин'):
+            self.username_input.fill(username)
 
     def fill_password(self, password: str):
-        self.password_input.fill(password)
+        with allure.step('Заполнить пароль'):
+            self.password_input.fill(password)
 
     def click_submit(self):
-        self.submit_button.click()
-        self.wait_for_load()
+        with allure.step('Нажать кнопку submit'):
+            self.submit_button.click()
+            self.wait_for_load()
 
     def login(self, username: str, password: str):
-        self.fill_username(username)
-        self.fill_password(password)
-        self.click_submit()
+        with allure.step('Авторизоваться в системе'):
+            self.fill_username(username)
+            self.fill_password(password)
+            self.click_submit()

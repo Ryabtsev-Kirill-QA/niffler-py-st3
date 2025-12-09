@@ -1,7 +1,11 @@
 import os
 import json
 import pytest
+import allure
+from allure_commons.reporter import AllureReporter
+from allure_pytest.listener import AllureListener
 from dotenv import load_dotenv
+from pytest import FixtureDef, FixtureRequest
 from playwright.sync_api import Page
 from playwright.sync_api import Browser
 
@@ -15,6 +19,7 @@ from pages.profile_page import ProfilePage
 from clients.spends_client import SpendsHttpClient
 
 
+@allure.title('Получаем переменные окружения')
 @pytest.fixture(scope="session")
 def envs() -> Envs:
     load_dotenv()
@@ -27,11 +32,13 @@ def envs() -> Envs:
                 )
 
 
+@allure.title('Http клиент')
 @pytest.fixture(scope="session")
 def spends_client(envs, get_token_from_user_state, playwright) -> SpendsHttpClient:
     return SpendsHttpClient(envs.api_url, get_token_from_user_state, playwright)
 
 
+@allure.title('Таблица в БД для трат')
 @pytest.fixture(scope="session")
 def spend_db(envs) -> SpendDb:
     return SpendDb(envs.spend_db_url)
@@ -73,6 +80,7 @@ def open_profile_page(profile_page, envs):
     profile_page.wait_for_load()
 
 
+@allure.title('Добавление категории трат')
 @pytest.fixture(params=[])
 def category(request, spends_client, spend_db):
     category_name = request.param
@@ -81,6 +89,7 @@ def category(request, spends_client, spend_db):
     spend_db.delete_category(category.id)
 
 
+@allure.title('Добавление траты')
 @pytest.fixture(params=[])
 def spends(request, spends_client):
     spend = spends_client.add_spends(request.param)
@@ -110,9 +119,9 @@ def setup_auth_state(browser: Browser, envs, tmp_path_factory):
     yield state_path
 
 
+@allure.title('Страница с предустановленной авторизацией')
 @pytest.fixture(scope="function")
 def page_with_auth(browser: Browser, setup_auth_state):
-    """Страница с предустановленной авторизацией"""
     context = browser.new_context(storage_state=str(setup_auth_state))
     page = context.new_page()
 
@@ -121,6 +130,7 @@ def page_with_auth(browser: Browser, setup_auth_state):
     context.close()
 
 
+@allure.title('Получение токена')
 @pytest.fixture(scope="session")
 def get_token_from_user_state(setup_auth_state):
     with open(setup_auth_state) as json_file:
@@ -129,6 +139,7 @@ def get_token_from_user_state(setup_auth_state):
     return api_token
 
 
+@allure.title('Удаление всех трат до и после теста')
 @pytest.fixture(scope="function")
 def clean_spendings_setup(spends_client):
     spends_client.delete_all_spendings()
@@ -136,3 +147,31 @@ def clean_spendings_setup(spends_client):
     yield
 
     spends_client.delete_all_spendings()
+
+
+def allure_reporter(config) -> AllureReporter:
+    listener: AllureListener = next(
+        filter(
+            lambda plugin: (isinstance(plugin, AllureListener)),
+            dict(config.pluginmanager.list_name_plugin()).values(),
+        ),
+        None,
+    )
+    return listener.allure_logger
+
+
+@pytest.hookimpl(hookwrapper=True, trylast=True)
+def pytest_fixture_setup(fixturedef: FixtureDef, request: FixtureRequest):
+    yield
+    logger = allure_reporter(request.config)
+    item = logger.get_last_item()
+    scope_letter = fixturedef.scope[0].upper()
+    item.name = f"[{scope_letter}] " + " ".join(fixturedef.argname.split("_")).title()
+
+
+@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+def pytest_runtest_teardown(item):
+    yield
+    reporter = allure_reporter(item.config)
+    test = reporter.get_test(None)
+    test.labels = list(filter(lambda x: x.name not in ("suite", "subSuite", "parentSuite"), test.labels))
