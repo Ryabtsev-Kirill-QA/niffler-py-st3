@@ -3,6 +3,7 @@ from playwright.sync_api import expect
 
 
 @allure.feature('Выход из системы')
+@allure.story('UI')
 class TestCategory:
 
     @allure.title('Редактирование названия категории через UI')
