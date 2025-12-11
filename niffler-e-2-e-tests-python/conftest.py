@@ -4,99 +4,29 @@ import pytest
 import allure
 from allure_commons.reporter import AllureReporter
 from allure_pytest.listener import AllureListener
+from allure_commons.types import AttachmentType
 from dotenv import load_dotenv
 from pytest import FixtureDef, FixtureRequest
-from playwright.sync_api import Page
 from playwright.sync_api import Browser
-
-from databases.spend_db import SpendDb
-from models.config import Envs
-from models.spend import CategoryAdd
 from pages.auth_page import LoginPage
-from pages.registration_page import RegistrationPage
-from pages.spending_page import SpendingPage
-from pages.profile_page import ProfilePage
-from clients.spends_client import SpendsHttpClient
+from models.config import Envs
+
+pytest_plugins = ["fixtures.auth_fixtures", "fixtures.client_fixtures", "fixtures.pages_fixtures"]
 
 
 @allure.title('Получаем переменные окружения')
 @pytest.fixture(scope="session")
 def envs() -> Envs:
     load_dotenv()
-    return Envs(frontend_url=os.getenv("FRONT_URL"),
-                api_url=os.getenv("API_URL"),
-                auth_url=os.getenv("AUTH_URL"),
-                spend_db_url=os.getenv("SPEND_DB_URL"),
-                niffler_username=os.getenv('NIFFLER_USER'),
-                niffler_password=os.getenv('NIFFLER_PASSWORD')
-                )
-
-
-@allure.title('Http клиент')
-@pytest.fixture(scope="session")
-def spends_client(envs, get_token_from_user_state, playwright) -> SpendsHttpClient:
-    return SpendsHttpClient(envs.api_url, get_token_from_user_state, playwright)
-
-
-@allure.title('Таблица в БД для трат')
-@pytest.fixture(scope="session")
-def spend_db(envs) -> SpendDb:
-    return SpendDb(envs.spend_db_url)
-
-
-@pytest.fixture()
-def login_page(page: Page) -> LoginPage:
-    login_page = LoginPage(page)
-    return login_page
-
-
-@pytest.fixture()
-def open_login_page(login_page, envs):
-    login_page.go_to(envs.auth_url)
-    login_page.wait_for_load()
-
-
-@pytest.fixture(scope="function")
-def registration_page(page: Page, envs) -> RegistrationPage:
-    registration_page = RegistrationPage(page, envs.auth_url)
-    return registration_page
-
-
-@pytest.fixture(scope="function")
-def spending_page(page_with_auth: Page, envs) -> SpendingPage:
-    spending_page = SpendingPage(page_with_auth, envs.frontend_url)
-    return spending_page
-
-
-@pytest.fixture(scope="function")
-def profile_page(page_with_auth: Page) -> ProfilePage:
-    profile_page = ProfilePage(page_with_auth)
-    return profile_page
-
-
-@pytest.fixture()
-def open_profile_page(profile_page, envs):
-    profile_page.go_to(envs.frontend_url + '/profile')
-    profile_page.wait_for_load()
-
-
-@allure.title('Добавление категории трат')
-@pytest.fixture(params=[])
-def category(request, spends_client, spend_db):
-    category_name = request.param
-    category = spends_client.add_category(CategoryAdd(name=category_name))
-    yield category.name
-    spend_db.delete_category(category.id)
-
-
-@allure.title('Добавление траты')
-@pytest.fixture(params=[])
-def spends(request, spends_client):
-    spend = spends_client.add_spends(request.param)
-    yield spend
-    all_spends = spends_client.get_all_spendings()
-    if spend.id in [s.id for s in all_spends]:
-        spends_client.delete_spending([spend.id])
+    envs_instance = Envs(frontend_url=os.getenv("FRONT_URL"),
+                         api_url=os.getenv("API_URL"),
+                         auth_url=os.getenv("AUTH_URL"),
+                         spend_db_url=os.getenv("SPEND_DB_URL"),
+                         niffler_username=os.getenv('NIFFLER_USER'),
+                         niffler_password=os.getenv('NIFFLER_PASSWORD')
+                         )
+    allure.attach(envs_instance.model_dump_json(indent=2), name="envs.json", attachment_type=AttachmentType.JSON)
+    return envs_instance
 
 
 @pytest.fixture(scope="session")
@@ -130,40 +60,17 @@ def page_with_auth(browser: Browser, setup_auth_state):
     context.close()
 
 
-@allure.title('Получение токена')
-@pytest.fixture(scope="session")
-def get_token_from_user_state(setup_auth_state):
-    with open(setup_auth_state) as json_file:
-        data = json.load(json_file)
-        api_token = data['origins'][0]['localStorage'][3]['value']
-    return api_token
-
-
-@allure.title('Удаление всех трат до и после теста')
-@pytest.fixture(scope="function")
-def clean_spendings_setup(spends_client):
-    spends_client.delete_all_spendings()
-
-    yield
-
-    spends_client.delete_all_spendings()
-
-
-def allure_reporter(config) -> AllureReporter:
-    listener: AllureListener = next(
-        filter(
-            lambda plugin: (isinstance(plugin, AllureListener)),
-            dict(config.pluginmanager.list_name_plugin()).values(),
-        ),
-        None,
-    )
+def allure_logger(config) -> AllureReporter:
+    """Получает логгер Аллюра из плагина pytest"""
+    listener: AllureListener = config.pluginmanager.get_plugin("allure_listener")
     return listener.allure_logger
 
 
 @pytest.hookimpl(hookwrapper=True, trylast=True)
 def pytest_fixture_setup(fixturedef: FixtureDef, request: FixtureRequest):
+    """Переименовывает фикстуры в Аллюре"""
     yield
-    logger = allure_reporter(request.config)
+    logger = allure_logger(request.config)
     item = logger.get_last_item()
     scope_letter = fixturedef.scope[0].upper()
     item.name = f"[{scope_letter}] " + " ".join(fixturedef.argname.split("_")).title()
@@ -171,7 +78,8 @@ def pytest_fixture_setup(fixturedef: FixtureDef, request: FixtureRequest):
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_teardown(item):
+    """Фильтрует метки в отчете аллюра"""
     yield
-    reporter = allure_reporter(item.config)
+    reporter = allure_logger(item.config)
     test = reporter.get_test(None)
     test.labels = list(filter(lambda x: x.name not in ("suite", "subSuite", "parentSuite"), test.labels))
