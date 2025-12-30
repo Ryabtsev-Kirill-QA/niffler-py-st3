@@ -4,6 +4,7 @@ from marks import Pages
 
 
 @allure.feature('Авторизация')
+@allure.story('UI')
 class TestAuth:
 
     @allure.title('Авторизация с валидными данными')

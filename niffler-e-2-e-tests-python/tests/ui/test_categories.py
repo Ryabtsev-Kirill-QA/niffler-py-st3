@@ -1,15 +1,14 @@
 import allure
 from playwright.sync_api import expect
 from marks import Pages, TestData
-
-TEST_CATEGORY = "test_category"
-TEST_CATEGORY_BD = "test_category_bd"
+from models.enums import Category
 
 
 @allure.feature('Категории')
+@allure.story('UI')
 class TestCategory:
     @allure.title('Редактирование названия категории через UI')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @Pages.open_profile_page
     def test_edit_category_name_ui(self, profile_page, category):
         new_name = "new_name"
@@ -21,7 +20,7 @@ class TestCategory:
             expect(profile_page.category_name.first).to_have_text(category)
 
     @allure.title('Архивация категории через UI')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @Pages.open_profile_page
     def test_archive_category_ui(self, profile_page, category):
         profile_page.archive_first_category()
@@ -30,7 +29,7 @@ class TestCategory:
             expect(profile_page.page.get_by_text(category).first).not_to_be_in_viewport()
 
     @allure.title('Разархивация категории через UI')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @Pages.open_profile_page
     def test_unarchive_category_ui(self, profile_page, category):
         profile_page.archive_first_category()
@@ -40,7 +39,8 @@ class TestCategory:
             expect(profile_page.page.get_by_text(category).first).to_be_visible()
 
     @allure.title('Добавление категории через БД')
-    @TestData.category(TEST_CATEGORY_BD)
+    @allure.story('DB')
+    @TestData.category(Category.TEST_CATEGORY)
     def test_add_category_and_check_db(self, envs, category, spend_db):
         user_categories = spend_db.get_user_categories(envs.niffler_username)
         user_category_names = [category.name for category in user_categories]
@@ -50,11 +50,12 @@ class TestCategory:
             assert category in user_category_names
 
     @allure.title('Удаление категории через БД')
+    @allure.story('DB')
     def test_delete_category_and_check_db(self, envs, spend_db):
-        new_category = spend_db.add_user_category(envs.niffler_username, TEST_CATEGORY_BD)
+        new_category = spend_db.add_user_category(envs.niffler_username, Category.TEST_CATEGORY_BD)
 
         search_before_delete = spend_db.get_category_by_id(new_category.id)
-        assert search_before_delete.name == TEST_CATEGORY_BD
+        assert search_before_delete.name == Category.TEST_CATEGORY_BD
 
         spend_db.delete_category(new_category.id)
 

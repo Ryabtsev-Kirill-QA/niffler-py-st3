@@ -2,10 +2,9 @@ import allure
 from playwright.sync_api import expect
 from marks import Pages
 
-TEST_CATEGORY = "test_category"
-
 
 @allure.feature('Профиль пользователя')
+@allure.story('UI')
 class TestProfile:
     @allure.title('Отображение информации в профиле')
     @Pages.open_profile_page

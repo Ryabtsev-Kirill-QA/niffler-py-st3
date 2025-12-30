@@ -2,22 +2,23 @@ import allure
 from faker import Faker
 from playwright.sync_api import expect
 from marks import TestData
-
-TEST_CATEGORY = "test_category"
+from models.enums import Category, Currency
+from utils.datetime_helper import get_past_date_iso
 
 
 @allure.feature('Таблица трат')
+@allure.story('UI')
 class TestSpendings:
     @allure.title('Добавление новой траты')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @TestData.spends({
         "amount": 101.1,
         "description": "test_description",
         "category": {
-            "name": TEST_CATEGORY
+            "name": Category.TEST_CATEGORY
         },
-        "spendDate": "2025-08-08T18:39:27.955Z",
-        "currency": "RUB"
+        "spendDate": get_past_date_iso(),
+        "currency": Currency.RUB
     })
     def test_add_new_spending(self, envs, spending_page, spend_db, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()
@@ -33,19 +34,19 @@ class TestSpendings:
         with allure.step('ОР: На экране в таблице отображается информация о добавленной трате'):
             expect(spending_page.page.get_by_text('History of Spendings')).to_be_visible()
             expect(spending_page.spendings_table).to_contain_text(str(spends.amount))
-            expect(spending_page.spendings_table).to_contain_text(TEST_CATEGORY)
+            expect(spending_page.spendings_table).to_contain_text(Category.TEST_CATEGORY)
             expect(spending_page.spendings_table).to_contain_text(spends.description)
 
     @allure.title('Редактирование траты')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @TestData.spends({
         "amount": "101.1",
         "description": "test_description",
         "category": {
-            "name": TEST_CATEGORY
+            "name": Category.TEST_CATEGORY
         },
-        "spendDate": "2025-08-08T18:39:27.955Z",
-        "currency": "RUB"
+        "spendDate": get_past_date_iso(),
+        "currency": Currency.RUB
     })
     def test_update_spending(self, spending_page, clean_spendings_setup, category, spends):
         faker = Faker()
@@ -68,15 +69,15 @@ class TestSpendings:
             expect(spending_page.spendings_table).to_contain_text(new_description)
 
     @allure.title('Удаление траты')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @TestData.spends({
         "amount": "101.1",
         "description": "test_description",
         "category": {
-            "name": TEST_CATEGORY
+            "name": Category.TEST_CATEGORY
         },
-        "spendDate": "2025-08-08T18:39:27.955Z",
-        "currency": "RUB"
+        "spendDate": get_past_date_iso(),
+        "currency": Currency.RUB
     })
     def test_delete_spending(self, spending_page, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()
@@ -91,15 +92,15 @@ class TestSpendings:
             expect(spending_page.spendings_table).not_to_contain_text(spends.description)
 
     @allure.title('Удаление всех трат')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @TestData.spends({
         "amount": "101.1",
         "description": "test_description",
         "category": {
-            "name": TEST_CATEGORY
+            "name": Category.TEST_CATEGORY
         },
-        "spendDate": "2025-08-08T18:39:27.955Z",
-        "currency": "RUB"
+        "spendDate": get_past_date_iso(),
+        "currency": Currency.RUB
     })
     def test_delete_all_spendings(self, spending_page, clean_spendings_setup, category, spends):
         faker = Faker()
@@ -119,7 +120,7 @@ class TestSpendings:
             expect(spending_page.page.get_by_text('There are no spendings')).to_be_visible()
 
     @allure.title('Сумма трат по категории под диаграммой')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     def test_total_category_spending_sum(self, spending_page, category, clean_spendings_setup):
         faker = Faker()
         amount_1 = faker.random_number()
@@ -136,15 +137,15 @@ class TestSpendings:
             expect(spending_page.category_spending_sum).to_contain_text(f'{amount_1 + amount_2}')
 
     @allure.title('Валидный поиск по тратам')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @TestData.spends({
         "amount": "101.1",
         "description": "test_description",
         "category": {
-            "name": TEST_CATEGORY
+            "name": Category.TEST_CATEGORY
         },
-        "spendDate": "2025-08-08T18:39:27.955Z",
-        "currency": "RUB"
+        "spendDate": get_past_date_iso(),
+        "currency": Currency.RUB
     })
     def test_valid_spending_search(self, spending_page, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()
@@ -158,15 +159,15 @@ class TestSpendings:
             expect(spending_page.spendings_table).to_contain_text(spends.description)
 
     @allure.title('Невалидный поиск по тратам')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @TestData.spends({
         "amount": "101.1",
         "description": "test_description",
         "category": {
-            "name": TEST_CATEGORY
+            "name": Category.TEST_CATEGORY
         },
-        "spendDate": "2025-08-08T18:39:27.955Z",
-        "currency": "RUB"
+        "spendDate": get_past_date_iso(),
+        "currency": Currency.RUB
     })
     def test_invalid_spending_search(self, spending_page, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()
@@ -181,15 +182,15 @@ class TestSpendings:
             expect(spending_page.spendings_table).not_to_contain_text(spends.description)
 
     @allure.title('Отображение валюты в сумме траты')
-    @TestData.category(TEST_CATEGORY)
+    @TestData.category(Category.TEST_CATEGORY)
     @TestData.spends({
         "amount": "101.1",
         "description": "test_description",
         "category": {
-            "name": TEST_CATEGORY
+            "name": Category.TEST_CATEGORY
         },
-        "spendDate": "2025-08-08T18:39:27.955Z",
-        "currency": "RUB"
+        "spendDate": get_past_date_iso(),
+        "currency": Currency.RUB
     })
     def test_currency_in_amount(self, spending_page, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()

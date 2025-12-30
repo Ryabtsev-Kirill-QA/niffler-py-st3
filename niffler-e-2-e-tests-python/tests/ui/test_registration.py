@@ -4,6 +4,7 @@ from marks import Pages
 
 
 @allure.feature('Регистрация')
+@allure.story('UI')
 class TestRegistration:
     @allure.title('Регистрация нового пользователя в системе')
     @Pages.open_login_page

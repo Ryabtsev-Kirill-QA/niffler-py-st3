@@ -1,93 +1,54 @@
-import allure
-import json
-from typing import Optional, Dict
-from playwright.sync_api import APIResponse
-from models.spend import Category, Spend, SpendAdd, CategoryAdd
+import requests
+from models.config import Envs
+from models.spend import Spend, SpendAdd, SpendEdit
+from models.category import CategorySQL
+from utils.sessions import BaseSession
 
 
 class SpendsHttpClient:
+    """Http-клиент"""
+
+    session: requests.Session
     base_url: str
 
-    def __init__(self, base_url: str, token: str, playwright):
-        self.base_url = base_url
-        self.request_context = playwright.request.new_context(
-            base_url=base_url,
-            extra_http_headers={
-                'Accept': 'application/json',
-                'Authorization': f'Bearer {token}',
-                'Content-Type': 'application/json'
-            }
-        )
+    def __init__(self, envs: Envs, token: str):
+        self.session = BaseSession(base_url=envs.api_url)
+        self.session.headers.update({
+            'Accept': 'application/json',
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        })
 
-    def _make_request(self, method: str, url: str, data: Optional[Dict] = None,
-                      params: Optional[Dict] = None) -> APIResponse:
-        # Логируем запрос
-        if data:
-            allure.attach(json.dumps(data, indent=2), name="Request body", attachment_type=allure.attachment_type.JSON)
-        if params:
-            allure.attach(json.dumps(params, indent=2), name="Request params", attachment_type=allure.attachment_type.JSON)
+    def get_categories(self) -> list[CategorySQL]:
+        response = self.session.get("/api/categories/all")
+        return [CategorySQL.model_validate(item) for item in response.json()]
 
-        # Выполняем запрос
-        kwargs = {k: v for k, v in [('data', data and json.dumps(data)),
-                                    ('params', params)] if v}
-        response = getattr(self.request_context, method.lower())(url, **kwargs)
+    def add_category(self, name: str) -> CategorySQL:
+        response = self.session.post("/api/categories/add", json={
+            "name": name
+        })
+        return CategorySQL.model_validate(response.json())
 
-        # Логируем ответ
-        allure.attach(f"Method: {method.upper()}\nURL: {response.url}\nStatus: {response.status}",
-                      name="Response Info",
-                      attachment_type=allure.attachment_type.TEXT)
-        allure.attach(response.text(), name="Response Body", attachment_type=allure.attachment_type.TEXT)
+    def edit_category(self, category: CategorySQL) -> CategorySQL:
+        category_data = CategorySQL.model_validate(category)
+        response = self.session.patch("/api/categories/update", json=category_data.model_dump())
+        return CategorySQL.model_validate(response.json())
 
+    def get_spends(self) -> list[Spend]:
+        response = self.session.get("/api/spends/all")
+        return [Spend.model_validate(item) for item in response.json()]
+
+    def add_spends(self, spend: SpendAdd) -> Spend:
+        spend_data = SpendAdd.model_validate(spend)
+        response = self.session.post("/api/spends/add", json=spend_data.model_dump())
+        return Spend.model_validate(response.json())
+
+    def edit_spend(self, edit_spend: SpendEdit) -> Spend:
+        response = self.session.patch("/api/spends/edit", data=edit_spend.model_dump_json())
+        print(response.json())
+        return Spend.model_validate(response.json())
+
+    def remove_spends(self, ids: list[str]):
+        """Удааление трат"""
+        response = self.session.delete("/api/spends/remove", params={"ids": ids})
         return response
-
-    def get_categories(self) -> list[CategoryAdd]:
-        with allure.step('Получить категории трат по API'):
-            response = self._make_request(method="get",
-                                          url="/api/categories/all")
-            self.raise_for_status(response)
-            return [CategoryAdd.model_validate(item) for item in response.json()]
-
-    def add_category(self, category: CategoryAdd) -> Category:
-        with allure.step('Добавить категорию трат по API'):
-            category = CategoryAdd.model_validate(category)
-            response = self._make_request(method="post",
-                                          url="/api/categories/add",
-                                          data=category.model_dump())
-            self.raise_for_status(response)
-            return Category.model_validate(response.json())
-
-    def add_spends(self, spend: dict) -> Spend:
-        with allure.step('Добавить трату по API'):
-            spend_data = SpendAdd.model_validate(spend)
-            response = self._make_request(method="post",
-                                          url="/api/spends/add",
-                                          data=spend_data.model_dump())
-            self.raise_for_status(response)
-            return Spend.model_validate(response.json())
-
-    def get_all_spendings(self) -> list[Spend]:
-        with allure.step('Получить все траты по API'):
-            response = self._make_request(method="get",
-                                          url="/api/v2/spends/all")
-            self.raise_for_status(response)
-            return [Spend.model_validate(item) for item in response.json()["content"]]
-
-    def delete_spending(self, ids: list[str]):
-        with allure.step('Удалить трату по API'):
-            ids_param = ",".join(ids)
-            response = self._make_request(method="delete",
-                                          url="/api/spends/remove",
-                                          params={"ids": ids_param})
-            self.raise_for_status(response)
-
-    def delete_all_spendings(self):
-        with allure.step('Удалить все траты по API, если они есть'):
-            all_spendings = self.get_all_spendings()
-            spending_ids = [spending.id for spending in all_spendings]
-            if spending_ids:
-                self.delete_spending(spending_ids)
-
-    @staticmethod
-    def raise_for_status(response: APIResponse):
-        if not response.ok:
-            raise Exception(f"{response.status}")
