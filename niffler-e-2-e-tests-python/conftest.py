@@ -11,7 +11,8 @@ from playwright.sync_api import Browser
 from pages.auth_page import LoginPage
 from models.config import Envs
 
-pytest_plugins = ["fixtures.auth_fixtures", "fixtures.client_fixtures", "fixtures.pages_fixtures"]
+pytest_plugins = ["fixtures.auth_fixtures", "fixtures.client_fixtures", "fixtures.pages_fixtures",
+                  "fixtures.kafka_fixtures"]
 
 
 @allure.title('Получаем переменные окружения')
@@ -22,6 +23,8 @@ def envs() -> Envs:
                          api_url=os.getenv("API_URL"),
                          auth_url=os.getenv("AUTH_URL"),
                          spend_db_url=os.getenv("SPEND_DB_URL"),
+                         userdata_db_url=os.getenv("USER_DB_URL"),
+                         kafka_address=os.getenv("KAFKA_ADDRESS"),
                          niffler_username=os.getenv('NIFFLER_USER'),
                          niffler_password=os.getenv('NIFFLER_PASSWORD')
                          )
