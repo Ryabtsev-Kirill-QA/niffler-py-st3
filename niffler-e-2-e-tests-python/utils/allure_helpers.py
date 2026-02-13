@@ -23,6 +23,15 @@ def allure_attach_request(function):
 
         with allure.step(f"{method} {url}"):
 
+            if 'data' in kwargs and kwargs['data']:
+                if isinstance(kwargs['data'], str) and kwargs['data'].strip().startswith('<'):
+                    allure.attach(
+                        body=kwargs['data'].encode('utf-8'),
+                        name="SOAP Request",
+                        attachment_type=allure.attachment_type.XML,
+                        extension=".xml"
+                    )
+
             response: Response = function(*args, **kwargs)
             curl = curlify.to_curl(response.request)
 
@@ -41,6 +50,15 @@ def allure_attach_request(function):
                 logging.error(f"Не смогли срендерить шаблон для отчета: {e}")
                 request_render = f"CURL: {curl}\nURL: {response.request.url}"
                 response_render = f"Status: {response.status_code}\nBody: {response.text[:500]}..."
+
+            if response.text and ('xml' in response.headers.get('Content-Type', '').lower()
+                                  or response.text.strip().startswith('<')):
+                allure.attach(
+                    body=response.text.encode('utf-8'),
+                    name=f"SOAP Response",
+                    attachment_type=allure.attachment_type.XML,
+                    extension=".xml"
+                )
 
             allure.attach(
                 body=request_render,
