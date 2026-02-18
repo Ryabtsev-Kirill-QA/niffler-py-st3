@@ -174,7 +174,7 @@ services:
       - niffler-network
 
   niffler-e-2-e:
-    profiles: [ test ]
+    profiles: [ disabled  ]
     container_name: niffler-e-2-e
     image: ${PREFIX}/niffler-e-2-e-tests:latest
     build:

@@ -57,12 +57,6 @@ jobs:
           echo "=== Content of .env file ==="
           cat .env
 
-      - name: Create symlink for tests folder
-        run: |
-          echo "=== Creating symlink niffler-e-2-e-tests -> niffler-e-2-e-tests-python ==="
-          ln -sf niffler-e-2-e-tests-python niffler-e-2-e-tests
-          ls -la | grep niffler
-
       - name: Start docker compose services
         run: |
           bash docker-compose-dev.sh
