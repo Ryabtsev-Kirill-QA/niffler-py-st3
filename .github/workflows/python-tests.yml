@@ -60,6 +60,8 @@ jobs:
       - name: Start docker compose services
         run: |
           bash docker-compose-dev.sh
+          docker compose logs
+          docker ps -a
 
       - name: Set up Python
         uses: actions/setup-python@v5
