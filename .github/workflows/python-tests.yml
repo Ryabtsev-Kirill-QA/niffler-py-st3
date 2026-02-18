@@ -35,10 +35,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Build backend containers
-        run: |
-          ./gradlew jibDockerBuild
-
       - name: Pull Chrome for Selenoid
         run: |
           docker pull selenoid/vnc_chrome:127.0
@@ -47,13 +43,13 @@ jobs:
         working-directory: ./niffler-e-2-e-tests-python
         run: |
           cat > .env << EOF
-          AUTH_URL=http://auth.niffler.dc:9000
-          FRONT_URL=http://frontend.niffler.dc
-          API_URL=http://gateway.niffler.dc:8090
-          SPEND_DB_URL=postgresql+psycopg2://postgres:secret@niffler-all-db:5432/niffler-spend
-          USER_DB_URL=postgresql+psycopg2://postgres:secret@niffler-all-db:5432/niffler-userdata
+          AUTH_URL=http://localhost:9000
+          FRONT_URL=http://localhost
+          API_URL=http://localhost:8090
+          SPEND_DB_URL=postgresql+psycopg2://postgres:secret@localhost:5432/niffler-spend
+          USER_DB_URL=postgresql+psycopg2://postgres:secret@localhost:5432/niffler-userdata
           KAFKA_ADDRESS=localhost:9093
-          SOAP_URL=http://userdata.niffler.dc:8089/ws/userdata
+          SOAP_URL=http://localhost:8089/ws/userdata
           NIFFLER_USER=$TEST_USERNAME
           NIFFLER_PASSWORD=$TEST_PASSWORD
           EOF
