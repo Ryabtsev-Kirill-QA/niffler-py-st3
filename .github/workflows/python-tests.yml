@@ -37,7 +37,7 @@ jobs:
 
       - name: Build backend containers
         run: |
-          ./gradlew jibDockerBuild -x :niffler-e-2-e-tests:test
+          ./gradlew jibDockerBuild
 
       - name: Pull Chrome for Selenoid
         run: |
@@ -67,9 +67,7 @@ jobs:
 
       - name: Start docker compose services
         run: |
-          docker compose up -d
-          docker ps -a
-          sleep 30
+          bash docker-compose-dev.sh
 
       - name: Set up Python
         uses: actions/setup-python@v5
