@@ -47,19 +47,15 @@ jobs:
         working-directory: ./niffler-e-2-e-tests-python
         run: |
           cat > .env << EOF
-          CHROME_BIN=/usr/bin/google-chrome-stable
-          FRONTEND_URL=http://frontend.niffler.dc
-          GATEWAY_URL=http://gateway.niffler.dc:8090
           AUTH_URL=http://auth.niffler.dc:9000
-          REGISTRATION_URL=http://auth.niffler.dc:9000
-          PROFILE_URL=http://frontend.niffler.dc/profile
+          FRONT_URL=http://frontend.niffler.dc
+          API_URL=http://gateway.niffler.dc:8090
           SPEND_DB_URL=postgresql+psycopg2://postgres:secret@niffler-all-db:5432/niffler-spend
-          USERDATA_DB_URL=postgresql+psycopg2://postgres:secret@niffler-all-db:5432/niffler-userdata
-          AUTH_DB_URL=postgresql+psycopg2://postgres:secret@niffler-all-db:5432/niffler-auth
-          TEST_USERNAME=$TEST_USERNAME
-          TEST_PASSWORD=$TEST_PASSWORD
+          USER_DB_URL=postgresql+psycopg2://postgres:secret@niffler-all-db:5432/niffler-userdata
           KAFKA_ADDRESS=kafka:9092
-          SOAP_ADDRESS=http://userdata.niffler.dc:8089/ws
+          SOAP_URL=http://userdata.niffler.dc:8089/ws/userdata
+          NIFFLER_USER=$TEST_USERNAME
+          NIFFLER_PASSWORD=$TEST_PASSWORD
           EOF
           
           echo "=== Content of .env file ==="
