@@ -57,31 +57,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Clean docker build cache
-        run: |
-          docker buildx prune -a -f
-          docker system prune -a -f
-          rm -rf ~/.docker/buildx/
-
-      - name: Verify docker-compose.yml
-        run: |
-          cat docker-compose.yml
-          docker compose config
-
-      - name: Debug docker-compose
-        run: |
-          echo "=== All compose files ==="
-          ls -la docker-compose*.yml
-          
-          echo "=== Docker version ==="
-          docker version
-          
-          echo "=== Compose version ==="
-          docker compose version
-          
-          echo "=== BuildKit status ==="
-          echo $DOCKER_BUILDKIT
-
       - name: Start docker compose services
         run: |
           bash docker-compose-dev.sh
