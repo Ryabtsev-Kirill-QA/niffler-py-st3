@@ -61,6 +61,13 @@ jobs:
         run: |
           bash docker-compose-dev.sh
 
+      - name: Add hosts entries
+        run: |
+          echo "127.0.0.1 auth.niffler.dc" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 frontend.niffler.dc" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 gateway.niffler.dc" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 userdata.niffler.dc" | sudo tee -a /etc/hosts
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
