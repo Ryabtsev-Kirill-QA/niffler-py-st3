@@ -33,7 +33,7 @@ def envs() -> Envs:
     return envs_instance
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
 def create_test_user_before_run(auth_client, envs):
     try:
         auth_client.register(username=envs.niffler_username, password=envs.niffler_password)
