@@ -1,0 +1,14 @@
+[
+    {
+        "id": "91d8571b-2227-41a8-98f6-2c80ebf790d5",
+        "name": "another_category",
+        "username": "test_user",
+        "archived": false
+    },
+    {
+        "id": "b5902577-cd50-45df-bb37-4363b58d1b90",
+        "name": "test_category",
+        "username": "test_user",
+        "archived": false
+    }
+]

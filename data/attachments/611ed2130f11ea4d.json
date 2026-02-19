@@ -1,0 +1,30 @@
+[
+    {
+        "id": "c5eaf734-35ab-48ed-8a84-d76f72e0a57f",
+        "spendDate": "2026-02-18T21:00:00.000+00:00",
+        "category": {
+            "id": "7fe2b74b-c0a1-4282-9b87-cf93242900c5",
+            "name": "test_category",
+            "username": "test_user",
+            "archived": false
+        },
+        "currency": "RUB",
+        "amount": 9400.0,
+        "description": "herself",
+        "username": "test_user"
+    },
+    {
+        "id": "845f4340-2bc7-48ff-ad49-3ac3172f4e1a",
+        "spendDate": "2026-02-18T21:00:00.000+00:00",
+        "category": {
+            "id": "7fe2b74b-c0a1-4282-9b87-cf93242900c5",
+            "name": "test_category",
+            "username": "test_user",
+            "archived": false
+        },
+        "currency": "RUB",
+        "amount": 11.0,
+        "description": "herself",
+        "username": "test_user"
+    }
+]

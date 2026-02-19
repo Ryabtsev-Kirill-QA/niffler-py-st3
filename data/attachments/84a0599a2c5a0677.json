@@ -1,0 +1,16 @@
+[
+    {
+        "id": "3dc9d361-9d67-4fce-91a9-d87cd28d53c3",
+        "spendDate": "2026-02-11T21:00:00.000+00:00",
+        "category": {
+            "id": "fc23e876-1727-4d98-92b1-8342df3375da",
+            "name": "test_category",
+            "username": "test_user",
+            "archived": false
+        },
+        "currency": "KZT",
+        "amount": 50000.0,
+        "description": "\u0422\u0440\u0430\u0442\u0430 \u0432 \u0442\u0435\u043d\u0433\u0435",
+        "username": "test_user"
+    }
+]

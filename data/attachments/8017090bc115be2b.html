@@ -1,0 +1,75 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset = UTF-8">
+    <script src="https://yastatic.net/jquery/2.2.3/jquery.min.js" crossorigin="anonymous"></script>
+
+    <link href="https://yastatic.net/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://yastatic.net/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+    <link type="text/css" href="https://yandex.st/highlightjs/8.0/styles/github.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script type="text/javascript" src="https://yandex.st/highlightjs/8.0/languages/bash.min.js"></script>
+    <script type="text/javascript" src="https://yandex.st/highlightjs/8.0/languages/json.min.js"></script>
+    <script type="text/javascript" src="https://yandex.st/highlightjs/8.0/languages/xml.min.js"></script>
+    <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+    <style>
+        pre {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <pre><code>DELETE to http://gateway.niffler.dc:8090/api/spends/remove?ids=9c7aee66-f5b6-49b9-842b-ecc93bf19a5f</code></pre>
+</div>
+
+
+
+
+
+    <h4>Headers</h4>
+    <div>
+    
+        <div>
+            <pre><code><b>User-Agent</b>: python-requests/2.32.5</code></pre>
+        </div>
+    
+        <div>
+            <pre><code><b>Accept-Encoding</b>: gzip, deflate</code></pre>
+        </div>
+    
+        <div>
+            <pre><code><b>Accept</b>: application/json</code></pre>
+        </div>
+    
+        <div>
+            <pre><code><b>Connection</b>: keep-alive</code></pre>
+        </div>
+    
+        <div>
+            <pre><code><b>Authorization</b>: Bearer eyJraWQiOiJiZjY3MmUzMy04NjliLTQ4MGYtYTliNi0wMTIwMTVmMjRkMDkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJhdWQiOiJjbGllbnQiLCJuYmYiOjE3NzE0OTcyMTcsInNjb3BlIjpbIm9wZW5pZCJdLCJpc3MiOiJodHRwOi8vYXV0aC5uaWZmbGVyLmRjOjkwMDAiLCJleHAiOjE3NzE1MDA4MTcsImlhdCI6MTc3MTQ5NzIxNywianRpIjoiZTgwYWY5MWQtYjg0MS00Njg3LTg1ODktMThmNDUzNGM2YjQwIn0.Cx5IhJoDtgb6CKhb_1kMul4M38hH3v75v_cqGK9X0pcU4O3aaO6ZNDV0XwsqG93TdUOJhiwP0gMQbaL3gvQaNzTX_2ytni85O7dSboysj9xnBZZZsJUPQEDdpelkb54yiAJtd4_1D3a6JKdR9q3st6cdwcmutyRAxzFSUMvL8G-QvzMRxP-_WGwnvr7luWdFv9IX1LdkvjP9eW0R1EtgBTDz39koZmP6-gzXK8mw92iOIDQKwQF9fe6qkmDQ4st1PBRkRDH91AOaeRgCToCOtCIVZiuMa0HcTdb9L6xZTvTI_aAbgpNZ9EdFM5tpg_GNgkododVZOQClcu5kl4j-lA</code></pre>
+        </div>
+    
+        <div>
+            <pre><code><b>Content-Type</b>: application/json</code></pre>
+        </div>
+    
+        <div>
+            <pre><code><b>Content-Length</b>: 0</code></pre>
+        </div>
+    
+    </div>
+
+
+
+
+
+
+    <h4>Curl</h4>
+    <div>
+        <pre><code>curl -X DELETE -H 'User-Agent: python-requests/2.32.5' -H 'Accept-Encoding: gzip, deflate' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'Authorization: Bearer eyJraWQiOiJiZjY3MmUzMy04NjliLTQ4MGYtYTliNi0wMTIwMTVmMjRkMDkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0X3VzZXIiLCJhdWQiOiJjbGllbnQiLCJuYmYiOjE3NzE0OTcyMTcsInNjb3BlIjpbIm9wZW5pZCJdLCJpc3MiOiJodHRwOi8vYXV0aC5uaWZmbGVyLmRjOjkwMDAiLCJleHAiOjE3NzE1MDA4MTcsImlhdCI6MTc3MTQ5NzIxNywianRpIjoiZTgwYWY5MWQtYjg0MS00Njg3LTg1ODktMThmNDUzNGM2YjQwIn0.Cx5IhJoDtgb6CKhb_1kMul4M38hH3v75v_cqGK9X0pcU4O3aaO6ZNDV0XwsqG93TdUOJhiwP0gMQbaL3gvQaNzTX_2ytni85O7dSboysj9xnBZZZsJUPQEDdpelkb54yiAJtd4_1D3a6JKdR9q3st6cdwcmutyRAxzFSUMvL8G-QvzMRxP-_WGwnvr7luWdFv9IX1LdkvjP9eW0R1EtgBTDz39koZmP6-gzXK8mw92iOIDQKwQF9fe6qkmDQ4st1PBRkRDH91AOaeRgCToCOtCIVZiuMa0HcTdb9L6xZTvTI_aAbgpNZ9EdFM5tpg_GNgkododVZOQClcu5kl4j-lA' -H 'Content-Type: application/json' -H 'Content-Length: 0' 'http://gateway.niffler.dc:8090/api/spends/remove?ids=9c7aee66-f5b6-49b9-842b-ecc93bf19a5f'</code></pre>
+    </div>
+
+</body>
+</html>
