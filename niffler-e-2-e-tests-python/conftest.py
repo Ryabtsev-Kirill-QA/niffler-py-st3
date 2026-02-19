@@ -51,7 +51,7 @@ def setup_auth_state(browser: Browser, envs, tmp_path_factory):
     page = context.new_page()
 
     login_page = LoginPage(page)
-    login_page.go_to(envs.auth_url)
+    login_page.go_to(envs.frontend_url)
     login_page.login(envs.niffler_username, envs.niffler_password)
     login_page.spending_page_name.wait_for(state='visible', timeout=10000)
 
