@@ -34,6 +34,14 @@ def envs() -> Envs:
 
 
 @pytest.fixture(scope="session")
+def create_test_user_before_run(auth_client, envs):
+    try:
+        auth_client.register(username=envs.niffler_username, password=envs.niffler_password)
+    except Exception as err:
+        print(f"User exists: {err}")
+
+
+@pytest.fixture(scope="session")
 def setup_auth_state(browser: Browser, envs, tmp_path_factory):
     """Автоматически создает файл с состоянием авторизации перед всеми тестами"""
     temp_dir = tmp_path_factory.mktemp("auth_data")
