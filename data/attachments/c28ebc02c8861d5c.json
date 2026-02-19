@@ -1,0 +1,11 @@
+{
+  "frontend_url": "http://localhost",
+  "api_url": "http://localhost:8090",
+  "auth_url": "http://localhost:9000",
+  "spend_db_url": "postgresql+psycopg2://postgres:secret@localhost:5432/niffler-spend",
+  "userdata_db_url": "postgresql+psycopg2://postgres:secret@localhost:5432/niffler-userdata",
+  "soap_url": "http://localhost:8089/ws/userdata",
+  "kafka_address": "localhost:9093",
+  "niffler_username": "test_user",
+  "niffler_password": "password"
+}
