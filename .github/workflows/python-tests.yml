@@ -97,7 +97,7 @@ jobs:
         run: |
           set +e
           mkdir -p allure-results
-          poetry run pytest --alluredir=allure-results -vv
+          poetry run pytest -n 2 --dist loadgroup --alluredir=allure-results -vv
           echo "exit_code=$?" >> $GITHUB_OUTPUT
 
       - name: Upload test logs

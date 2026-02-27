@@ -15,6 +15,8 @@ class TestAuthRegistrationKafka:
         username = Faker().user_name()
         password = Faker().password(special_chars=False)
 
+        kafka.reset_offsets("users")
+
         topic_partitions = kafka.subscribe_listen_new_offsets("users")
 
         result = auth_client.register(username, password)
