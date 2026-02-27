@@ -14,59 +14,52 @@
 
 ## Технологии и инструменты
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: flex-start;">
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/python-original.svg" width="50" height="50" style="object-fit: contain;">
-    <br><b>Python</b>
-  </div>
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/pw.png" width="50" height="50" style="object-fit: contain;">
-    <br><b>Playwright</b>
-  </div>
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/pytest.png" width="45" height="45" style="object-fit: contain;">
-    <br><b>Pytest</b>
-  </div>
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/requests.png" width="55" height="55" style="object-fit: contain;">
-    <br><b>Requests</b>
-  </div>
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/allure_report.png" width="45" height="45" style="object-fit: contain;">
-    <br><b>Allure</b>
-  </div>
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/github.png" width="50" height="45" style="object-fit: contain;">
-    <br><b>GitHub</b>
-  </div>
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/docker.png" width="45" height="45" style="object-fit: contain;">
-    <br><b>Docker</b>
-  </div>
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/Postgresql.png" width="45" height="45" style="object-fit: contain;">
-    <br><b>PostgreSQL</b>
-  </div>
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/kafka.png" width="45" height="45" style="object-fit: contain;">
-    <br><b>Kafka</b>
-  </div>
-  
-  <div style="text-align: center; min-width: 60px;">
-    <img src="resources/images/icons/soap.png" width="45" height="45" style="object-fit: contain;">
-    <br><b>SOAP</b>
-  </div>
-  
-</div>
+<table>
+  <tr>
+    <td align="center">
+      <img src="resources/images/icons/python-original.svg" width="50" height="50"><br>
+      <b>Python</b>
+    </td>
+    <td align="center">
+      <img src="resources/images/icons/pw.png" width="50" height="50"><br>
+      <b>Playwright</b>
+    </td>
+    <td align="center">
+      <img src="resources/images/icons/pytest.png" width="45" height="45"><br>
+      <b>Pytest</b>
+    </td>
+    <td align="center">
+      <img src="resources/images/icons/requests.png" width="55" height="55"><br>
+      <b>Requests</b>
+    </td>
+    <td align="center">
+      <img src="resources/images/icons/allure_report.png" width="45" height="45"><br>
+      <b>Allure</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="resources/images/icons/github.png" width="50" height="45"><br>
+      <b>GitHub</b>
+    </td>
+    <td align="center">
+      <img src="resources/images/icons/docker.png" width="45" height="45"><br>
+      <b>Docker</b>
+    </td>
+    <td align="center">
+      <img src="resources/images/icons/Postgresql.png" width="45" height="45"><br>
+      <b>PostgreSQL</b>
+    </td>
+    <td align="center">
+      <img src="resources/images/icons/kafka.png" width="45" height="45"><br>
+      <b>Kafka</b>
+    </td>
+    <td align="center">
+      <img src="resources/images/icons/soap.png" width="45" height="45"><br>
+      <b>SOAP</b>
+    </td>
+  </tr>
+</table>
 
 > В проекте написаны End-to-end тесты для микросервисного приложения Niffler.
 > 
