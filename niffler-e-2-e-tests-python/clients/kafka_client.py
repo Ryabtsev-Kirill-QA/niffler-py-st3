@@ -80,6 +80,22 @@ class KafkaClient:
         except Exception as err:
             logging.error("probably no such topic: %s: %s", topic, err)
 
+    def reset_offsets(self, topic):
+        """Сбрасывает offset для топика до последнего сообщения"""
+        try:
+            topic_metadata = self.consumer.list_topics(topic)
+            partitions = topic_metadata.topics[topic].partitions.keys()
+
+            for partition_id in partitions:
+                partition = TopicPartition(topic, partition_id)
+                low, high = self.consumer.get_watermark_offsets(partition, timeout=5)
+
+                self.consumer.assign([TopicPartition(topic, partition_id, high)])
+
+        except Exception as err:
+            logging.error(f"Failed to reset offsets for {topic}: {err}")
+            return False
+
     def subscribe_listen_new_offsets(self, topic):
         """Позволяет читать новые сообщения, созданные после подписки"""
         logging.info("subscribe")

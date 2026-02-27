@@ -1,4 +1,5 @@
 import allure
+import pytest
 from faker import Faker
 from playwright.sync_api import expect
 from marks import TestData
@@ -20,6 +21,7 @@ class TestSpendings:
         "spendDate": get_past_date_iso(),
         "currency": Currency.RUB
     })
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_add_new_spending(self, envs, spending_page, spend_db, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()
 
@@ -48,6 +50,7 @@ class TestSpendings:
         "spendDate": get_past_date_iso(),
         "currency": Currency.RUB
     })
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_update_spending(self, spending_page, clean_spendings_setup, category, spends):
         faker = Faker()
         new_amount = faker.random_number()
@@ -79,6 +82,7 @@ class TestSpendings:
         "spendDate": get_past_date_iso(),
         "currency": Currency.RUB
     })
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_delete_spending(self, spending_page, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()
 
@@ -102,6 +106,7 @@ class TestSpendings:
         "spendDate": get_past_date_iso(),
         "currency": Currency.RUB
     })
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_delete_all_spendings(self, spending_page, clean_spendings_setup, category, spends):
         faker = Faker()
         amount = faker.random_number()
@@ -121,6 +126,7 @@ class TestSpendings:
 
     @allure.title('Сумма трат по категории под диаграммой')
     @TestData.category(Category.TEST_CATEGORY)
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_total_category_spending_sum(self, spending_page, category, clean_spendings_setup):
         faker = Faker()
         amount_1 = faker.random_number()
@@ -147,6 +153,7 @@ class TestSpendings:
         "spendDate": get_past_date_iso(),
         "currency": Currency.RUB
     })
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_valid_spending_search(self, spending_page, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()
 
@@ -169,6 +176,7 @@ class TestSpendings:
         "spendDate": get_past_date_iso(),
         "currency": Currency.RUB
     })
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_invalid_spending_search(self, spending_page, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()
 
@@ -192,6 +200,7 @@ class TestSpendings:
         "spendDate": get_past_date_iso(),
         "currency": Currency.RUB
     })
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_currency_in_amount(self, spending_page, clean_spendings_setup, category, spends):
         spending_page.navigate_to_spending_page()
 

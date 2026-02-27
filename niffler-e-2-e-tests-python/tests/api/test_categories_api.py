@@ -1,4 +1,6 @@
 import allure
+import pytest
+
 from models.category import CategorySQL
 from models.enums import Category
 from utils.api_assertions import assertEqual, assertIsNotNone
@@ -8,6 +10,7 @@ from utils.api_assertions import assertEqual, assertIsNotNone
 @allure.story('API')
 class TestCategoryApi:
     @allure.title('Создание категории через API')
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_add_category_api(self, spends_client, envs, clean_categories):
         with allure.step('Отправить запрос на создание категории через API'):
             added_category = spends_client.add_category(Category.TEST_CATEGORY)
@@ -18,6 +21,7 @@ class TestCategoryApi:
                     "Категория закреплена за тестовым пользователем")
 
     @allure.title('Получение списка категорий через API')
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_get_categories_api(self, spends_client, envs, clean_categories):
         with allure.step('Отправить запрос на создание категории 1 через API'):
             added_category_1 = spends_client.add_category(Category.TEST_CATEGORY)
@@ -32,6 +36,7 @@ class TestCategoryApi:
         assertEqual(added_category_2.name, categories_list[0].name, "Категория 2 есть в ответе")
 
     @allure.title('Редактирование названия категории через API')
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_edit_category_name_api(self, spends_client, envs, clean_categories):
         with allure.step('Отправить запрос на создание категории через API'):
             added_category = spends_client.add_category(Category.TEST_CATEGORY)
@@ -47,6 +52,7 @@ class TestCategoryApi:
                     "В ответе приходит имя категории, которое передавали при изменении")
 
     @allure.title('Помещение в архив категории через API')
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_edit_category_archive_api(self, spends_client, envs, clean_categories):
         with allure.step('Отправить запрос на создание категории через API'):
             added_category = spends_client.add_category(Category.TEST_CATEGORY)

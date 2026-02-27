@@ -21,7 +21,7 @@
     </xs:element>
     <xs:element name="id" type="xs:string"/>
     <xs:element name="username" type="xs:NCName"/>
-    <xs:element name="fullname" type="xs:NCName"/>
+    <xs:element name="fullname" type="xs:string" nillable="true"/>
     <xs:element name="currency" type="xs:NCName"/>
     <xs:element name="friendshipStatus" type="xs:NCName"/>
 </xs:schema>

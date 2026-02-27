@@ -10,6 +10,7 @@ from utils.datetime_helper import get_past_date_iso
 @allure.story('API')
 class TestSpendsApi:
     @allure.title('Создание траты через API')
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_add_spend_api(self, spends_client, envs, clean_categories, clean_spendings_setup):
         with allure.step('Отправить запрос на создание траты через API'):
             data = {
@@ -35,6 +36,7 @@ class TestSpendsApi:
                     "В ответе приходит валюта, которую передавали при создании")
 
     @allure.title('Удаление траты через API')
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_delete_spend_api(self, spends_client, spend_db, envs, clean_categories):
         with allure.step('Отправить запрос на создание траты через API'):
             data = {
@@ -55,6 +57,7 @@ class TestSpendsApi:
             assertNotIn(new_spend.id, [s.id for s in all_spends], "Созданная трата отсутствует")
 
     @allure.title('Редактирование траты через API')
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_edit_spend_api(self, spends_client, envs, clean_categories, clean_spendings_setup):
         with allure.step('Отправить запрос на создание траты через API'):
             data = {
@@ -96,6 +99,7 @@ class TestSpendsApi:
         Currency.EUR,
         Currency.KZT
     ])
+    @pytest.mark.xdist_group(name="categories_tests")
     def test_add_spend_all_currencies_api(self, spends_client, envs, clean_categories, clean_spendings_setup, currency):
         test_data = {
             Currency.RUB: {"amount": 1000.50, "description": "Трата в рублях"},
