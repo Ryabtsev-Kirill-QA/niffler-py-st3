@@ -1,0 +1,3 @@
+SELECT category.id, category.name, category.username, category.archived 
+FROM category 
+WHERE category.id = 8c6241ff-2609-489a-b5b4-b22d62190472

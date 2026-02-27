@@ -1,0 +1,1 @@
+User exists: 400 Client Error:  for url: http://auth.niffler.dc:9000/register
