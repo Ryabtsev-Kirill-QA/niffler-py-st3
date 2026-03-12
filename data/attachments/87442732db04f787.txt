@@ -1,0 +1,6 @@
+/guru.qa.grpc.niffler.NifflerCurrencyService/CalculateRate
+spendCurrency: USD
+desiredCurrency: RUB
+amount: 0
+
+

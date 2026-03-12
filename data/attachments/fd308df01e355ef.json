@@ -1,0 +1,16 @@
+[
+    {
+        "id": "a7f2f7c2-3ee6-4876-a9d0-68c1edff126d",
+        "spendDate": "2026-03-05T21:00:00.000+00:00",
+        "category": {
+            "id": "1f279295-9755-4135-921f-42276cc88e21",
+            "name": "test_new_category",
+            "username": "test_user",
+            "archived": false
+        },
+        "currency": "RUB",
+        "amount": 9877.0,
+        "description": "personal",
+        "username": "test_user"
+    }
+]

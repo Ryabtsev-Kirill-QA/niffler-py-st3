@@ -1,0 +1,16 @@
+[
+    {
+        "id": "f7a53ef5-aa3e-46f2-8bec-336386be3546",
+        "spendDate": "2026-03-05T21:00:00.000+00:00",
+        "category": {
+            "id": "838735f0-14b2-41e4-8b6d-4459970224fd",
+            "name": "test_category",
+            "username": "test_user",
+            "archived": false
+        },
+        "currency": "EUR",
+        "amount": 90.25,
+        "description": "\u0422\u0440\u0430\u0442\u0430 \u0432 \u0435\u0432\u0440\u043e",
+        "username": "test_user"
+    }
+]

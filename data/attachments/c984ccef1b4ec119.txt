@@ -1,0 +1,1 @@
+{'id': 'd6ff1233-48a7-4dca-80b5-e39665a79f3d', 'spendDate': '2026-03-05T21:02:24.054+00:00', 'category': {'id': 'd7f96c24-6ebd-4692-968a-a8a03058933d', 'name': 'test_category', 'username': 'test_user', 'archived': False}, 'currency': 'USD', 'amount': 111.0, 'description': 'Отпуск', 'username': 'test_user'}

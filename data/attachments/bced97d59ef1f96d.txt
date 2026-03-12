@@ -1,0 +1,3 @@
+SELECT category.id, category.name, category.username, category.archived 
+FROM category 
+WHERE category.username = test_user AND category.name = test_category_bd

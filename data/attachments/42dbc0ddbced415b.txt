@@ -1,0 +1,8 @@
+User exists: 400 Client Error:  for url: http://auth.niffler.dc:9000/register
+/guru.qa.grpc.niffler.NifflerCurrencyService/CalculateRate
+spendCurrency: EUR
+desiredCurrency: RUB
+amount: 100
+
+calculatedAmount: 7200
+
