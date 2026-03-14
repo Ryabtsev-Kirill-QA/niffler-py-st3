@@ -12,7 +12,7 @@ from pages.auth_page import LoginPage
 from models.config import Envs
 
 pytest_plugins = ["fixtures.auth_fixtures", "fixtures.client_fixtures", "fixtures.pages_fixtures",
-                  "fixtures.kafka_fixtures", "fixtures.soap_fixtures"]
+                  "fixtures.kafka_fixtures", "fixtures.soap_fixtures", "fixtures.grpc_fixtures"]
 
 
 @allure.title('Получаем переменные окружения')
@@ -95,3 +95,7 @@ def pytest_runtest_teardown(item):
     reporter = allure_logger(item.config)
     test = reporter.get_test(None)
     test.labels = list(filter(lambda x: x.name not in ("suite", "subSuite", "parentSuite"), test.labels))
+
+
+def pytest_addoption(parser: pytest.Parser) -> None:
+    parser.addoption("--grpc-mock", action="store_true", default=False)

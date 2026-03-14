@@ -71,6 +71,148 @@
           "Content-Type": "application/json"
         }
       }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/NifflerCurrencyService/calculateRate",
+        "bodyPatterns": [
+          {
+            "equalToJson": {
+              "spendCurrency": "EUR",
+              "desiredCurrency": "RUB",
+              "amount": 100.0
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "calculatedAmount": 7200.0
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/NifflerCurrencyService/calculateRate",
+        "bodyPatterns": [
+          {
+            "equalToJson": {
+              "spendCurrency": "EUR",
+              "amount": 100.0
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {},
+        "headers": {
+          "grpc-status": "2",
+          "grpc-message": "Application error processing RPC"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/NifflerCurrencyService/calculateRate",
+        "bodyPatterns": [
+          {
+            "equalToJson": {
+              "spendCurrency": "USD",
+              "desiredCurrency": "EUR",
+              "amount": 50.0
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "calculatedAmount": 46.3
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/NifflerCurrencyService/calculateRate",
+        "bodyPatterns": [
+          {
+            "equalToJson": {
+              "spendCurrency": "USD",
+              "desiredCurrency": "RUB",
+              "amount": 0.0
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "calculatedAmount": 0.0
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/NifflerCurrencyService/calculateRate",
+        "bodyPatterns": [
+          {
+            "equalToJson": {
+              "spendCurrency": "USD",
+              "desiredCurrency": "RUB",
+              "amount": -100.0
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "calculatedAmount": -6666.67
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/NifflerCurrencyService/calculateRate",
+        "bodyPatterns": [
+          {
+            "equalToJson": {
+              "spendCurrency": "USD",
+              "desiredCurrency": "RUB",
+              "amount": 0.01
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "calculatedAmount": 0.67
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
     }
   ]
 }

@@ -36,6 +36,10 @@
       <img src="resources/images/icons/allure_report.png" width="45" height="45"><br>
       <b>Allure</b>
     </td>
+    <td align="center">
+      <img src="resources/images/icons/grpc.png" width="45" height="45"><br>
+      <b>gRPC</b>
+    </td>
   </tr>
   <tr>
     <td align="center">
@@ -63,7 +67,7 @@
 
 > В проекте написаны End-to-end тесты для микросервисного приложения Niffler.
 > 
-> Фреймворк проверяет полный цикл работы приложения, взаимодействуя с его <code><strong>*UI, REST API, SOAP API и Kafka*</strong></code>.
+> Фреймворк проверяет полный цикл работы приложения, взаимодействуя с его <code><strong>*UI, REST API, SOAP API, Kafka и gRPC*</strong></code>.
 > 
 > UI автотесты аписаны на <code><strong>*Python*</strong></code> с использованием <code><strong>*Playwright, Pytest, Pydantic*</strong></code>.
 >
@@ -79,6 +83,7 @@
 >- [x] *Kafka-тесты на регистрацию пользователей*
 >- [x] *SOAP-тесты микросервиса niffler-userdata на данные о пользователях*
 >- [x] *UI- тесты на основные пользовательские пути (Авторизация, Добавление трат и тд)*
+>- [x] *gRPC-тесты на микросервис niffler-currency*
 >- [x] *Подготовка к некоторым тестам ведется через БД postgres c спользованием библиотеки SQLAlchemy*
 
 
@@ -132,6 +137,19 @@ poetry run pytest -n 2 --dist loadgroup --alluredir=allure-results --clean-allur
 allure serve allure-results
 ```
 <img src="resources/images/allure_example.png" width="1250">
+
+## Запуск тестов на mock gRPC-сервер валют
+
+Есть возможность локально из корневой папки запустить mock-сервис валют, используемый для тестирования gRPC-запросов:
+
+```
+docker compose -f docker-compose.grpc_mock.yml up
+```
+Далее в /niffler-e-2-e-tests-python запустить тесты:
+
+```
+pytest tests/grps --grpc-mock
+```
 
 ## GitHub Actions CI/CD
 
